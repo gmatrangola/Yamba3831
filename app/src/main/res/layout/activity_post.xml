@@ -24,4 +24,14 @@
         android:layout_alignParentRight="true"
         android:text="@string/post"
         android:id="@+id/postButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/maxChars"
+        android:id="@+id/charCountText"
+        android:textColor="@color/valid"
+        android:layout_below="@id/messageText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

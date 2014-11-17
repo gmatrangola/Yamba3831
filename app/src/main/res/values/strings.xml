@@ -4,5 +4,6 @@
     <string name="app_name">Yamba</string>
     <string name="action_settings">Settings</string>
     <string name="post">Post</string>
+    <string name="maxChars">140</string>
 
 </resources>
