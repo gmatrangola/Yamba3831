@@ -1,6 +1,7 @@
 package com.thenewcircle.yamba;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +24,7 @@ public class PostActivity extends Activity implements TextWatcher {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         String maxCharsString = getResources().getString(R.string.maxChars);
         maxChars = Integer.parseInt(maxCharsString);
@@ -41,6 +43,29 @@ public class PostActivity extends Activity implements TextWatcher {
         messageText.addTextChangedListener(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause - clean things up");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
