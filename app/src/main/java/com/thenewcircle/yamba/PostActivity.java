@@ -41,6 +41,7 @@ public class PostActivity extends Activity implements TextWatcher {
                 final String message = messageText.getText().toString();
                 Log.d(TAG, "Message = " + message);
                 Intent postServiceIntent = new Intent(PostActivity.this, PostService.class);
+                messageText.getText().clear();
                 postServiceIntent.putExtra("message", message);
                 startService(postServiceIntent);
             }
@@ -49,6 +50,7 @@ public class PostActivity extends Activity implements TextWatcher {
 
         messageText.addTextChangedListener(this);
     }
+
 
     @Override
     protected void onPause() {
@@ -60,6 +62,11 @@ public class PostActivity extends Activity implements TextWatcher {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("message");
+        if(message != null) {
+            messageText.setText(message);
+        }
     }
 
     @Override
