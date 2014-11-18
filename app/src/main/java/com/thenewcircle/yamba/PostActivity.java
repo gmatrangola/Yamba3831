@@ -24,7 +24,7 @@ public class PostActivity extends Activity implements TextWatcher {
     private EditText messageText;
     private TextView charCountText;
     private int maxChars;
-    private Button postButton;
+    private MenuItem sendMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +35,7 @@ public class PostActivity extends Activity implements TextWatcher {
 
         setContentView(R.layout.activity_post);
         messageText = (EditText) findViewById(R.id.messageText);
-        postButton = (Button) findViewById(R.id.postButton);
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String message = messageText.getText().toString();
-                Log.d(TAG, "Message = " + message);
-                Intent postServiceIntent = new Intent(PostActivity.this, PostService.class);
-                messageText.getText().clear();
-                postServiceIntent.putExtra("message", message);
-                startService(postServiceIntent);
-            }
-        });
+
         charCountText = (TextView) findViewById(R.id.charCountText);
 
         messageText.addTextChangedListener(this);
@@ -86,6 +75,7 @@ public class PostActivity extends Activity implements TextWatcher {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_post, menu);
+        sendMenuItem = menu.findItem(R.id.send);
         return true;
     }
 
@@ -96,11 +86,19 @@ public class PostActivity extends Activity implements TextWatcher {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.send:
+                final String message = messageText.getText().toString();
+                Log.d(TAG, "Message = " + message);
+                Intent postServiceIntent = new Intent(PostActivity.this, PostService.class);
+                messageText.getText().clear();
+                postServiceIntent.putExtra("message", message);
+                startService(postServiceIntent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -122,12 +120,12 @@ public class PostActivity extends Activity implements TextWatcher {
         charCountText.setText(charsRemaining + "");
         if(charsRemaining < 0) {
             charCountText.setTextColor(getResources().getColor(R.color.error));
-            postButton.setEnabled(false);
+            sendMenuItem.setEnabled(false);
         }
         else {
             charCountText.setTextColor(getResources().getColor(R.color.valid));
-            postButton.setEnabled(true);
+            sendMenuItem.setEnabled(true);
         }
-        if(s.length() == 0 ) postButton.setEnabled(false);
+        if(s.length() == 0 ) sendMenuItem.setEnabled(false);
     }
 }

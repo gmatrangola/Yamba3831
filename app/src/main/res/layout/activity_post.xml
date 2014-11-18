@@ -20,14 +20,6 @@
         android:layout_alignParentEnd="true">
         <requestFocus/>
         </EditText>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/messageText"
-        android:layout_alignParentRight="true"
-        android:text="@string/post"
-        android:enabled="false"
-        android:id="@+id/postButton" />
 
     <TextView
         android:layout_width="wrap_content"
