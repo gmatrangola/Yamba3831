@@ -99,6 +99,10 @@ public class PostActivity extends Activity implements TextWatcher {
                 postServiceIntent.putExtra("message", message);
                 startService(postServiceIntent);
                 return true;
+            case R.id.refresh:
+                Intent timelineServiceIntent = new Intent(this, TimelineService.class);
+                startService(timelineServiceIntent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

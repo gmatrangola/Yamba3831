@@ -6,5 +6,6 @@
     <string name="post">Post</string>
     <string name="maxChars">140</string>
     <string name="hint">Type your message.</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
