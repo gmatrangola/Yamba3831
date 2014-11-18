@@ -120,7 +120,6 @@ public class PostActivity extends Activity implements TextWatcher {
     public void afterTextChanged(Editable s) {
         int charsRemaining = maxChars - s.length();
         charCountText.setText(charsRemaining + "");
-        if(s.length() == 0 ) postButton.setEnabled(false);
         if(charsRemaining < 0) {
             charCountText.setTextColor(getResources().getColor(R.color.error));
             postButton.setEnabled(false);
@@ -129,5 +128,6 @@ public class PostActivity extends Activity implements TextWatcher {
             charCountText.setTextColor(getResources().getColor(R.color.valid));
             postButton.setEnabled(true);
         }
+        if(s.length() == 0 ) postButton.setEnabled(false);
     }
 }
