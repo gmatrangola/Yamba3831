@@ -11,6 +11,7 @@
         android:inputType="textMultiLine"
         android:lines="5"
         android:ems="10"
+        android:hint="@string/hint"
         android:id="@+id/messageText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -23,6 +24,7 @@
         android:layout_below="@+id/messageText"
         android:layout_alignParentRight="true"
         android:text="@string/post"
+        android:enabled="false"
         android:id="@+id/postButton" />
 
     <TextView
