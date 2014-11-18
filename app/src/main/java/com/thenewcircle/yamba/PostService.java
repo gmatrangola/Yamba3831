@@ -5,6 +5,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
@@ -35,7 +37,12 @@ public class PostService extends IntentService {
         String message = intent.getStringExtra("message");
 
         // Yamba client from the yambaclientlib
-        final YambaClient yambaClient = new YambaClient("student", "password");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = prefs.getString("userName", null);
+        String password = prefs.getString("password", null);
+        // NEVER Do this in real life!!!
+        Log.d(TAG, "userName = " + userName + " password = " + password);
+        final YambaClient yambaClient = new YambaClient(userName, password);
 
         // Build the common notification stuff
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

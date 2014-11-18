@@ -97,6 +97,8 @@ public class PostActivity extends Activity implements TextWatcher {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
 
