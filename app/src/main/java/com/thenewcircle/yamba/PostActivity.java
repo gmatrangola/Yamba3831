@@ -40,31 +40,9 @@ public class PostActivity extends Activity implements TextWatcher {
             public void onClick(View v) {
                 final String message = messageText.getText().toString();
                 Log.d(TAG, "Message = " + message);
-                final YambaClient yambaClient = new YambaClient("student", "password");
-                Runnable postMessage = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            yambaClient.postStatus(message);
-                            try {
-                                Thread.sleep(8000);
-                            } catch (InterruptedException e) {
-                                Log.e(TAG, "sleep", e);
-                            }
-                            Runnable clearMessage = new Runnable() {
-                                @Override
-                                public void run() {
-                                    messageText.getText().clear();
-                                }
-                            };
-                            runOnUiThread(clearMessage);
-
-                        } catch (YambaClientException e) {
-                            Log.e(TAG, "Unable to post " + message, e);
-                        }
-                    }
-                };
-                new Thread(postMessage).start();
+                Intent postServiceIntent = new Intent(PostActivity.this, PostService.class);
+                postServiceIntent.putExtra("message", message);
+                startService(postServiceIntent);
             }
         });
         charCountText = (TextView) findViewById(R.id.charCountText);
