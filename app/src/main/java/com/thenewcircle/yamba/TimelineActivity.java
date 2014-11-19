@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 /**
@@ -31,5 +33,21 @@ public class TimelineActivity extends Activity {
         super.onResume();
         Intent timelineServiceIntent = new Intent(this, TimelineService.class);
         startService(timelineServiceIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeline_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.startPost) {
+            Intent postIntent = new Intent(this, PostActivity.class);
+            startActivity(postIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
