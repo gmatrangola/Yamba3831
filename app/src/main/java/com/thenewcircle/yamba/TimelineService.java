@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -30,6 +31,11 @@ public class TimelineService extends IntentService {
         String userName = prefs.getString("userName", null);
         String password = prefs.getString("password", null);
 
+        Cursor c = getContentResolver().query(TimelineContract.CONTENT_URI,
+                TimelineContract.MAX_TIME_CREATED,
+                null, null, null);
+        long maxTime = c.moveToFirst()?c.getLong(0):Long.MIN_VALUE;
+
         YambaClient yambaClient = new YambaClient(userName, password);
         try {
             List<YambaClient.Status> posts = yambaClient.getTimeline(20);
@@ -37,11 +43,14 @@ public class TimelineService extends IntentService {
             ContentValues values = new ContentValues();
             for(YambaClient.Status status : posts) {
                 Log.d(TAG, "message: " + status.getMessage() + " user: " + status.getUser());
-                values.put(ID, status.getId());
-                values.put(MESSAGE, status.getMessage());
-                values.put(TIME_CREATED, status.getCreatedAt().getTime());
-                values.put(USER, status.getUser());
-                getContentResolver().insert(TimelineContract.CONTENT_URI, values);
+                long time = status.getCreatedAt().getTime();
+                if(time > maxTime) {
+                    values.put(ID, status.getId());
+                    values.put(MESSAGE, status.getMessage());
+                    values.put(TIME_CREATED, time);
+                    values.put(USER, status.getUser());
+                    getContentResolver().insert(TimelineContract.CONTENT_URI, values);
+                }
             }
         } catch (YambaClientException e) {
             Log.d(TAG, "Unable to update timeline.", e);

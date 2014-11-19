@@ -52,7 +52,11 @@ public class TimelineProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d(TAG, "query " + uri);
+        SQLiteDatabase db = timelineHelper.getWritableDatabase();
+        Cursor c = db.query(TimelineHelper.TABLE, projection, selection, selectionArgs, null, null,
+                sortOrder);
+        return c;
     }
 
     @Override
