@@ -50,4 +50,14 @@ public class TimelineActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void setDetailsId(long id) {
+        // swap out Fragment
+        FragmentTransaction tx = getFragmentManager().beginTransaction();
+        TimelineDetailsFragment timelineDetails = new TimelineDetailsFragment();
+        tx.replace(R.id.fragment_container, timelineDetails);
+        timelineDetails.setRowId(id);
+        tx.addToBackStack("Details");
+        tx.commit();
+    }
 }

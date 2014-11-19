@@ -6,8 +6,11 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
+
+import static com.thenewcircle.yamba.TimelineContract.Columns.*;
 
 public class TimelineProvider extends ContentProvider {
 
@@ -54,8 +57,18 @@ public class TimelineProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "query " + uri);
         SQLiteDatabase db = timelineHelper.getWritableDatabase();
-        Cursor c = db.query(TimelineHelper.TABLE, projection, selection, selectionArgs, null, null,
-                sortOrder);
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(TimelineHelper.TABLE);
+        switch (URI_MATCHER.match(uri)) {
+            case STATUS_DIR:
+                // do nothing;
+                break;
+            case STATUS_ITEM:
+                qb.appendWhere(ID + "=" + uri.getLastPathSegment());
+                break;
+        }
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }

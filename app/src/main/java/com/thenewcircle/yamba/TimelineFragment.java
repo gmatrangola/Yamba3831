@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class TimelineFragment extends ListFragment
 
     private SimpleCursorAdapter adapter;
     private static final String[] FROM = {MESSAGE,          TIME_CREATED,  USER};
-    private static final int[]      TO = {R.id.messageText, R.id.timeText, R.id.userNameText};
+    private static final int[]      TO = {R.id.messageText, R.id.timeText, R.id.detailsUserNameText};
 
     private SimpleCursorAdapter.ViewBinder rowViewBinder = new SimpleCursorAdapter.ViewBinder() {
         @Override
@@ -67,7 +68,14 @@ public class TimelineFragment extends ListFragment
         getLoaderManager().initLoader(0, null, this);
     }
 
-
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        if(getActivity() instanceof TimelineActivity) {
+            TimelineActivity activity = (TimelineActivity) getActivity();
+            activity.setDetailsId(id);
+        }
+        super.onListItemClick(l, v, position, id);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
