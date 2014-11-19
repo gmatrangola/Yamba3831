@@ -67,6 +67,8 @@ public class TimelineFragment extends ListFragment
         getLoaderManager().initLoader(0, null, this);
     }
 
+
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader");

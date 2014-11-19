@@ -56,6 +56,7 @@ public class TimelineProvider extends ContentProvider {
         SQLiteDatabase db = timelineHelper.getWritableDatabase();
         Cursor c = db.query(TimelineHelper.TABLE, projection, selection, selectionArgs, null, null,
                 sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }
 
