@@ -1,6 +1,7 @@
 package com.thenewcircle.yamba;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -9,6 +10,7 @@ import android.util.Log;
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
+import static com.thenewcircle.yamba.TimelineContract.Columns.*;
 import java.util.List;
 
 /**
@@ -31,8 +33,15 @@ public class TimelineService extends IntentService {
         YambaClient yambaClient = new YambaClient(userName, password);
         try {
             List<YambaClient.Status> posts = yambaClient.getTimeline(20);
+
+            ContentValues values = new ContentValues();
             for(YambaClient.Status status : posts) {
                 Log.d(TAG, "message: " + status.getMessage() + " user: " + status.getUser());
+                values.put(ID, status.getId());
+                values.put(MESSAGE, status.getMessage());
+                values.put(TIME_CREATED, status.getCreatedAt().getTime());
+                values.put(USER, status.getUser());
+                getContentResolver().insert(TimelineContract.CONTENT_URI, values);
             }
         } catch (YambaClientException e) {
             Log.d(TAG, "Unable to update timeline.", e);

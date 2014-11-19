@@ -19,6 +19,9 @@
         <activity android:name="com.thenewcircle.yamba.SettingsActivity" />
         <service android:name="com.thenewcircle.yamba.PostService"/>
         <service android:name="com.thenewcircle.yamba.TimelineService" />
+        <provider
+            android:authorities="com.thenewcircle.yamba.provider"
+            android:name="com.thenewcircle.yamba.TimelineProvider" />
     </application>
 
 </manifest>
