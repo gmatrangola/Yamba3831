@@ -1,5 +1,6 @@
 package com.thenewcircle.yamba;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -26,6 +27,10 @@ import static com.thenewcircle.yamba.TimelineContract.Columns.*;
  */
 public class TimelineFragment extends ListFragment
     implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    public interface OnMessageSelectedListener {
+        public void onMessageSelected(long id);
+    }
 
     private static final String TAG = "yamba." + TimelineFragment.class.getSimpleName();
 
@@ -59,6 +64,14 @@ public class TimelineFragment extends ListFragment
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(!(activity instanceof OnMessageSelectedListener)) {
+            throw new IllegalArgumentException("Activity must implement OnMessageSelectedListener");
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.row_friend_status, null, FROM, TO,
@@ -70,10 +83,8 @@ public class TimelineFragment extends ListFragment
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if(getActivity() instanceof TimelineActivity) {
-            TimelineActivity activity = (TimelineActivity) getActivity();
-            activity.setDetailsId(id);
-        }
+        OnMessageSelectedListener listener = (OnMessageSelectedListener) getActivity();
+        listener.onMessageSelected(id);
         super.onListItemClick(l, v, position, id);
     }
 
