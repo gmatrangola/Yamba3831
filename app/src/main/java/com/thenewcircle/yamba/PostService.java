@@ -5,8 +5,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
@@ -37,27 +35,11 @@ public class PostService extends IntentService {
         String message = intent.getStringExtra("message");
 
         // Yamba client from the yambaclientlib
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = prefs.getString("userName", null);
-        String password = prefs.getString("password", null);
+        YambaApp app = (YambaApp) getApplication();
+        YambaClient yambaClient = app.getYambaClient();
+        if(yambaClient == null) return;
+
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        if(userName == null || password == null || userName.length() == 0 || password.length() == 0){
-            Notification.Builder userNotification = new Notification.Builder(this);
-            userNotification.setSmallIcon(R.drawable.ic_launcher);
-            userNotification.setContentTitle("Unable to connect to Yamba");
-            userNotification.setContentText("Click here to set Username and password");
-            Intent prefsIntent = new Intent(this, SettingsActivity.class);
-            PendingIntent pendingPrefs = PendingIntent.getActivity(this, 500, prefsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            // userNotification.addAction(R.drawable.ic_launcher, "Settings", pendingPrefs);
-            userNotification.setContentIntent(pendingPrefs);
-            notificationManager.notify(300, userNotification.getNotification());
-            return;
-        }
-
-        // NEVER Do this in real life!!!
-        Log.d(TAG, "userName = " + userName + " password = " + password);
-        final YambaClient yambaClient = new YambaClient(userName, password);
 
         // Build the common notification stuff
         Notification.Builder builder = new Notification.Builder(this);

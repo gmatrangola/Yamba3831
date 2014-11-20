@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 /**
  * Created by geoff on 11/19/14.
  */
-public class TimelineActivity extends Activity {
+public class TimelineActivity extends YambaActivity {
 
     private FrameLayout listContainer;
 
@@ -38,7 +38,7 @@ public class TimelineActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_activity, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -18,7 +18,7 @@ import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
 
-public class PostActivity extends Activity implements TextWatcher {
+public class PostActivity extends YambaActivity implements TextWatcher {
 
     private static final String TAG = "yamba." + PostActivity.class.getSimpleName();
     private EditText messageText;
@@ -76,7 +76,9 @@ public class PostActivity extends Activity implements TextWatcher {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_post, menu);
         sendMenuItem = menu.findItem(R.id.send);
-        return true;
+        int length = messageText.getText().length();
+        sendMenuItem.setEnabled(length > 0 && length < maxChars);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -87,10 +89,6 @@ public class PostActivity extends Activity implements TextWatcher {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
             case R.id.send:
                 final String message = messageText.getText().toString();
                 Log.d(TAG, "Message = " + message);
@@ -98,10 +96,6 @@ public class PostActivity extends Activity implements TextWatcher {
                 messageText.getText().clear();
                 postServiceIntent.putExtra("message", message);
                 startService(postServiceIntent);
-                return true;
-            case R.id.refresh:
-                Intent timelineServiceIntent = new Intent(this, TimelineService.class);
-                startService(timelineServiceIntent);
                 return true;
         }
 
@@ -124,12 +118,12 @@ public class PostActivity extends Activity implements TextWatcher {
         charCountText.setText(charsRemaining + "");
         if(charsRemaining < 0) {
             charCountText.setTextColor(getResources().getColor(R.color.error));
-            sendMenuItem.setEnabled(false);
+            if(sendMenuItem != null) sendMenuItem.setEnabled(false);
         }
         else {
             charCountText.setTextColor(getResources().getColor(R.color.valid));
-            sendMenuItem.setEnabled(true);
+            if(sendMenuItem != null) sendMenuItem.setEnabled(true);
         }
-        if(s.length() == 0 ) sendMenuItem.setEnabled(false);
+        if(sendMenuItem != null && s.length() == 0 ) sendMenuItem.setEnabled(false);
     }
 }

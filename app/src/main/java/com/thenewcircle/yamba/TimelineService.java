@@ -3,9 +3,7 @@ package com.thenewcircle.yamba;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
@@ -27,16 +25,16 @@ public class TimelineService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = prefs.getString("userName", null);
-        String password = prefs.getString("password", null);
+        // Yamba client from the yambaclientlib
+        YambaApp app = (YambaApp) getApplication();
+        YambaClient yambaClient = app.getYambaClient();
+        if(yambaClient == null) return;
 
         Cursor c = getContentResolver().query(TimelineContract.CONTENT_URI,
                 TimelineContract.MAX_TIME_CREATED,
                 null, null, null);
         long maxTime = c.moveToFirst()?c.getLong(0):Long.MIN_VALUE;
 
-        YambaClient yambaClient = new YambaClient(userName, password);
         try {
             List<YambaClient.Status> posts = yambaClient.getTimeline(20);
 
