@@ -3,6 +3,7 @@
     package="com.thenewcircle.yamba" >
 
     <application
+        android:name="com.thenewcircle.yamba.YambaApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"

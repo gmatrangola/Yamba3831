@@ -51,6 +51,10 @@ public class TimelineActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Called by the TimelineFragment to indicate a user choice
+     * @param id
+     */
     public void setDetailsId(long id) {
         // swap out Fragment
         FragmentTransaction tx = getFragmentManager().beginTransaction();
