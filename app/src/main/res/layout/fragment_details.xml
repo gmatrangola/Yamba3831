@@ -18,7 +18,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="message"
         android:id="@+id/detailsMessageText"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/detailsUserNameText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="44dp"
