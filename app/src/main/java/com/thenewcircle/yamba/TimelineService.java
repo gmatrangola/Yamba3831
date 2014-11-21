@@ -40,7 +40,9 @@ public class TimelineService extends IntentService {
 
             ContentValues values = new ContentValues();
             for(YambaClient.Status status : posts) {
-                Log.d(TAG, "message: " + status.getMessage() + " user: " + status.getUser());
+                if(BuildConfig.DEBUG) {
+                    Log.d(TAG, "message: " + status.getMessage() + " user: " + status.getUser());
+                }
                 long time = status.getCreatedAt().getTime();
                 if(time > maxTime) {
                     values.put(ID, status.getId());

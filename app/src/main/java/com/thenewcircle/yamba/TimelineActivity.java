@@ -1,5 +1,6 @@
 package com.thenewcircle.yamba;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -22,17 +23,11 @@ public class TimelineActivity extends YambaActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         FrameLayout detailsContainer = (FrameLayout) findViewById(R.id.details_container);
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getActionBar().setDisplayShowTitleEnabled(false);
         TimelineFragment timelineFragment = new TimelineFragment();
 
         listContainer = (FrameLayout) findViewById(R.id.fragment_container);
-        FragmentTransaction tx = getFragmentManager().beginTransaction();
-        if(detailsContainer != null) {
-            detailsFragment = new TimelineDetailsFragment();
-            tx.replace(R.id.details_container, detailsFragment, "details");
-        }
-        tx.replace(R.id.fragment_container, timelineFragment, "list");
-
-        tx.commit();
     }
 
     @Override
@@ -40,6 +35,23 @@ public class TimelineActivity extends YambaActivity implements
         super.onResume();
         Intent timelineServiceIntent = new Intent(this, TimelineService.class);
         startService(timelineServiceIntent);
+
+        ActionBar.Tab tab;
+        tab = getActionBar().newTab();
+        tab.setText("Timeline");
+        tab.setTabListener(new TabListener<TimelineFragment>(this, "timeline", TimelineFragment.class));
+        getActionBar().addTab(tab);
+
+        tab = getActionBar().newTab();
+        tab.setText("Post");
+        tab.setTabListener(new TabListener<PostFragment>(this, "post", PostFragment.class));
+        getActionBar().addTab(tab);
+    }
+
+    @Override
+    protected void onPause() {
+        getActionBar().removeAllTabs();
+        super.onPause();
     }
 
     @Override
